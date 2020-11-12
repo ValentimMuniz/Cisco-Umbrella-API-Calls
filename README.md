@@ -23,5 +23,5 @@ A aplicação vai trabalhar de modo inteligente fazendo todas as verificações 
 5. Toda requisição sucedida, irá gerar um log para o que foi cadastrado no umbrella
 6. Em todos os tipo de cadastros, sendo eles: Site, Internal Networks ou Internal Domains, a alicação verifica o que já está cadastrado no umbrella e compara com o CSV, depois ignora tudo o que já está cadastrado e assim só cadastrado o que realmente é novo!
 <br><br><br>
-<img src="screenshots/aplicacao.png">
+<img src="images/aplicacao.png">
 
