@@ -17,11 +17,15 @@ Essa aplicação tem como intuito facilitar os cadastros em massa de Internal Do
 
 # Features
 A aplicação vai trabalhar de modo inteligente fazendo todas as verificações e logando tudo para a pasta de logs da raiz da aplicação! Entre as verificações estão:
-1. Se o CSV de Internal Networks foi preenchido corretamente, <b>como citado acima</b> a aplicação vai te informar que está incorreto e vai gerar um arquivo de log na linha do CSV que está incorreta!
-3. No cadastro de Internal Networks, a aplicação é capaz de fazer a verificação se um Ip/Prefixo está correto. Lembrando que precisa ser um IP de rede para cadastro no Umbrella.
-4. A aplicação vai retornar mensagens em todos os casos, desde de, erros de configuração até quando tudo ocorreu bem e foram feitas as requisições!
-5. Toda requisição sucedida, irá gerar um log para o que foi cadastrado no umbrella
-6. Em todos os tipo de cadastros, sendo eles: Site, Internal Networks ou Internal Domains, a alicação verifica o que já está cadastrado no umbrella e compara com o CSV, depois ignora tudo o que já está cadastrado e assim só cadastrado o que realmente é novo!
+1. Se o CSV de Internal Networks foi preenchido corretamente, como citado <b>acima</b> a aplicação vai te informar que está incorreto, não permite o cadastro, e vai gerar um arquivo de log informando a linha do CSV que está incorreta!
+2. No cadastro de Internal Networks, a aplicação é capaz de fazer a verificação se um Ip/Prefixo está correto, se estiver incorreto um arquivo de log é gerado informando quais Ip's que não foram preenchidos corretamente. Lembrando que precisa ser um IP de rede para cadastro no Umbrella.
+3. A aplicação vai retornar mensagens em todos os casos, desde de, erros de configuração até quando tudo ocorreu bem e foram feitas as requisições!
+4. Toda requisição sucedida, irá gerar um log para o que foi cadastrado no umbrella
+5. Em todos os tipo de cadastros, sendo eles: Site, Internal Networks ou Internal Domains, a alicação verifica o que já está cadastrado no umbrella e compara com o CSV, depois ignora tudo o que já está cadastrado e assim só cadastrado o que realmente é novo!
+6. Todos os arquivos de logs dão a informação de horário em que a requisição foi feita! São eles :<br>
+   <b>wrongips.log</b> - Arquivo de log dos Ip's que estão errados no CSV de Internal Networks
+   <b>wrongCSV.log</b> - Arquivo de log que informa as linhas que estão erradas no CSV de Internal Networks (lenbrando que o correto está no <b>item 5</b> do funcionamento) 
+   <b>registred_internalNetworks.log</b> - Arquivo de log
 <br><br><br>
 <img src="images/aplicacao.png">
 
