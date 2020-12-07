@@ -99,7 +99,7 @@
 			"csv_error_Destinations_log" : "Erro no CSV para cadastro de Destinos, CSV informado: ",
 			"csv_missing_title" : "CSV faltando!",
 			"csv_missing" : "Por favor, selecione um arquivo CSV antes de enviar!",
-			"label_choose_csv" : "Ecolher CSV ->",
+			"label_choose_csv" : "Escolher CSV ->",
 			"label_csv_selected" : "CSV selecionado: ",
 			"access_btn" : "Acesso",
 			"explore_csv_btn" : "Explorar Arquivos",
