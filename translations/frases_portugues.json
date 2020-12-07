@@ -48,7 +48,7 @@
 			"internaldomain_already_registred_title" : "Já cadastrado",
 			"internaldomain_already_registred" : "Internal domain já cadastrado!! Domain informado: ",
 			"internaldomain_succesfully_registred" : "Internal domain cadastrado com sucesso!! Domain informado: ",
-			"internaldomain_siteName_label" : "Nome do Internal Domain: ",
+			"internaldomain_Name_label" : "Nome do Internal Domain: ",
 			"internaldomain_title" : "Umbrella API Calls - Criar Internal Domain",
 			"internaldomain_title_label" : "Cadastro manual de Internal Domains",
 			"domainName_text_empty_title" : "Campo Vazio",
