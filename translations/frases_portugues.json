@@ -114,11 +114,9 @@
 			"firstTimeScript_empty_mgmg_key" : "Management API Key inválido, não pode ser nulo ou vazio!",
 			"firstTimeScript_empty_orgID_title" : "Organization ID inválido",
 			"firstTimeScript_empty_orgID" : "Organization ID inválido, não pode ser nulo ou vazio!",
-			"firstTimeScript_ask_orgID_title" : "Primeira vez rodando!",
+			"firstTimeScript_ask_title" : "Primeira vez rodando!",
 			"firstTimeScript_ask_orgID" : "Qual o ID da sua organização?",
-			"firstTimeScript_ask_mgm_key_title" : "Primeira vez rodando!",
 			"firstTimeScript_ask_mgm_key" : "Qual o Management API Key?",
-			"firstTimeScript_ask_mgm_secret_title" : "Primeira vez rodando!",
 			"firstTimeScript_ask_mgm_secret" : "Qual o Management Secret Key?",
 			"firstTimeScript_message_title" : "Primeira vez executando o script!",
 			"firstTimeScript_message" : "Primeira vez executando o script, as configurações iniciais serão feitas através de prompts interativos!"
