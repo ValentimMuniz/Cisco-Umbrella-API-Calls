@@ -51,6 +51,8 @@
 			"internaldomain_Name_label" : "Nome do Internal Domain: ",
 			"internaldomain_title" : "Umbrella API Calls - Criar Internal Domain",
 			"internaldomain_title_label" : "Cadastro manual de Internal Domains",
+			"internaldomain_too_long_title" : "Nome inválido",
+			"internaldomain_too_long" : "Nome do Internal Domain é muito extenso, digite um nome menor!",
 			"domainName_text_empty_title" : "Campo Vazio",
 			"domainName_text_empty" : "Por favor, preencha o campo 'Nome do Internal Domain'",
 			"internalnetworks_successfully_registred_title" : "Internal Networks cadastradas com sucesso",
