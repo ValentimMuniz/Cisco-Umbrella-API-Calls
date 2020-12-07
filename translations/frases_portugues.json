@@ -69,7 +69,7 @@
 			"destinationManual_destination_text" : "Destino: ",
 			"destinationManual_already_registred" : ", já existe na lista : ",
 			"destinationManual_successfully_regitred_title" : "Sucesso",
-			"destinationManual_successfully_regitred" : ", foi adicionado à lista: ",
+			"destinationManual_successfully_regitred" : ", foi adicionado com sucesso à lista: ",
 			"destinationManual_title" : "Umbrella API Calls - Criar Destinos",
 			"destinationManual_title_label" : "Cadastro manual de Destinos",
 			"destinationManual_destination_label" : "Destino : ",
