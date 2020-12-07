@@ -25,7 +25,7 @@
 			"menu_internalNetworks" : "Internal Networks",
 			"menu_internalNetworks_csv" : "Cadastrar Internal Networks via arquivo CSV",
 			"menu_sites" : "Sites and Active Directory",
-			"menu_sites_csv" : "Castrar Sites via arquivo CSV",
+			"menu_sites_csv" : "Cadastrar Sites via arquivo CSV",
 			"menu_sites_manual" : "Cadastrar Site manualmente",
 			"sites_successfully_registred_title" : "Sites cadastrados com sucesso",
 			"sites_successfully_registred" : "Sites cadastrados com sucesso, arquivo log registred_sites.log gerado",
