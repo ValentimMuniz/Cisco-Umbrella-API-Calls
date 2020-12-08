@@ -1,7 +1,7 @@
 {
 	"frase" : [
 		{
-			"invalid_access_title" : "Access denied" ,
+			"invalid_access_title" : "Access denied" , 
 			"invalid_access" : "Email is wrong or not a Full Admin! Email: ",
 			"label_language" : "Language",
 			"root_title" : "Access - Umbrella API Calls",
