@@ -34,7 +34,7 @@
 			"sitesCSV_title_label" : "Registration of Sites via CSV",
 			"siteManual_already_registred_title" : "Already registered",
 			"siteManual_already_registred" : "Site already registered!! Site informed: ",
-			"siteManual_succesfully_registred" : "Site successfully registered!! S informed: ",
+			"siteManual_succesfully_registred" : "Site successfully registered!! Site informed: ",
 			"siteManual_siteName_label" : "Site Name: ",
 			"siteManual_title" : "Umbrella API Calls - Create Site",
 			"siteManual_title_label" : "Manual Site Registration",
