@@ -30,5 +30,6 @@ A aplicação vai trabalhar de modo inteligente fazendo todas as verificações 
    <b>registred_sites.log</b> - Arquivo de log que informa os Sites do CSV selecionado que foram cadastradas.
    <b>registred_destinations.log</b> - Arquivo de log que informa os Destinos do CSV selecionado que foram cadastradas.
 <br><br><br>
-<img src="images/app.png">
+<img src="images/access.png"><br><br>
+<img src="images/app_home.png">
 
