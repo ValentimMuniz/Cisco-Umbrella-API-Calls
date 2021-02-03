@@ -121,7 +121,26 @@
 			"firstTimeScript_ask_mgm_secret" : "Qual o Management Secret Key?",
 			"firstTimeScript_message_title" : "Primeira vez executando o script!",
 			"success_title" : "Sucesso",
-			"firstTimeScript_message" : "Primeira vez executando o script, as configurações iniciais serão feitas através de prompts interativos!"
+			"firstTimeScript_message" : "Primeira vez executando o script, as configurações iniciais serão feitas através de prompts interativos!",
+			"investigate_title" : "Umbrela Investigate",
+			"investigate_menu_title" : "Checar reputação de URL",
+			"investigate_check_label" : "Checar reputação de URL",
+			"investigate_checkBtn" : "Checar",
+			"investigate_addBtn" : "Add para uma Lista",
+			"investigate_clearBtn" : "Limpar",
+			"investigate_typeURL_label" : "Digite o URL/Domínio: ",
+			"investigate_addblacklistwindow_label" : "Adicionar URL para uma Lista",
+			"investigate_message_notCategorized" : "Not categorized",
+			"investigate_message_status_clean" : "Clean",
+			"investigate_message_status_malicious" : "Malicious",
+			"investigate_message_status_notClassified" : "Not classified",
+			"investigate_labeldomain" : "Domínio: ",
+			"investigate_labelstatus" : "Status: ",
+			"investigate_labelcategorycontent" : "Categoria de conteúdo: ",
+			"investigate_labelcategorysec" : "Categoria de segurança: ",
+			"investigate_invalidtoken" : "Investigate API Token inválido",
+			"investigate_notallowed" : "HTTP 405 - Method not allowed",
+			"investigate_domainName_text_empty" : "Por favor, preencha o campo de URL/Domínio"
 		}	
 	]
 }

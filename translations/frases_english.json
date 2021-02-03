@@ -121,7 +121,26 @@
 			"firstTimeScript_ask_mgm_secret" : "What is the Secret Management Key?",
 			"firstTimeScript_message_title" : "First time running the script!",
 			"success_title" : "Success",
-			"firstTimeScript_message" : "First time running the script, the initial settings will be made through interactive prompts!"
+			"firstTimeScript_message" : "First time running the script, the initial settings will be made through interactive prompts!",
+			"investigate_title" : "Umbrela Investigate",
+			"investigate_menu_title" : "Check URL reputation",
+			"investigate_check_label" : "Check URL reputation",
+			"investigate_checkBtn" : "Check",
+			"investigate_addBtn" : "Add to Destination List",
+			"investigate_clearBtn" : "Clear",
+			"investigate_typeURL_label" : "Type URL/Domain: ",
+			"investigate_addblacklistwindow_label" : "Add URL to a Destination List",
+			"investigate_message_notCategorized" : "Not categorized",
+			"investigate_message_status_clean" : "Clean",
+			"investigate_message_status_malicious" : "Malicious",
+			"investigate_message_status_notClassified" : "Not classified",
+			"investigate_labeldomain" : "Domain: ",
+			"investigate_labelstatus" : "Status: ",
+			"investigate_labelcategorycontent" : "Content categories: ",
+			"investigate_labelcategorysec" : "Security categories: ",
+			"investigate_invalidtoken" : "Invalid Investigate API Token",
+			"investigate_notallowed" : "HTTP 405 - Method not allowed",
+			"investigate_domainName_text_empty" : "Please fill in the 'URL/Domain' field"
 		}	
 	]
 }
