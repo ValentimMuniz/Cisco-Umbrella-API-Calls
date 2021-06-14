@@ -8,7 +8,7 @@ Essa aplicação tem como intuito facilitar os cadastros em massa de Internal Do
 1. Primeiramente você irá precisar das API Key e API Secret do <a href="https://docs.umbrella.com/umbrella-api/docs/authentication-and-errors">Cisco Umbrella Management API</a> para fazer as requisições da aplicação.
 2. Você também irá precisar das API key e API Secret do <a href="https://developer.cisco.com/docs/cloud-security/#!reporting-v2-getting-started/authentication"> Cisco Umbrella Reporting API</a>
 3. Você também irá precisar de uma chave de API do <a href="https://developer.cisco.com/docs/cloud-security/#!investigate-getting-started/authentication"> Cisco Umbrella Investigate API</a>
-4. Você irá precisar também do Ubrella Organization ID! Use <a href = "https://docs.umbrella.com/deployment-umbrella/docs/find-your-organization-id" target="_blank">esta documentacao</a> para saber como obter seu Organization ID.
+4. Você irá precisar também do Umbrella Organization ID! Use <a href = "https://docs.umbrella.com/deployment-umbrella/docs/find-your-organization-id" target="_blank">esta documentacao</a> para saber como obter seu Organization ID.
 5. Para ter acesso a aplicação, o email do usuário precisará ter permissão de Full Admin à orgarnização especificada na configuração. Use <a href="https://docs.umbrella.com/deployment-umbrella/docs/add-a-new-user"> esta documentação</a> para saber como funcionam as permissões de usuários no Umbrella.
 6. O CSV deve ser em formato serparado por vírgula!!<br>
 7. O CSV de Internal Networks deve ser preenchido da seguinte forma:<br>
