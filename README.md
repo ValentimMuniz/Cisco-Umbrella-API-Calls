@@ -6,14 +6,18 @@ Essa aplicação tem como intuito facilitar os cadastros em massa de Internal Do
 
 # Funcionamento
 1. Primeiramente você irá precisar das API Key e API Secret do <a href="https://docs.umbrella.com/umbrella-api/docs/authentication-and-errors">Cisco Umbrella Management API</a> para fazer as requisições da aplicação.
-2. Você irá precisar também do Ubrella Organization ID! Use <a href = "https://docs.umbrella.com/deployment-umbrella/docs/find-your-organization-id" target="_blank">esta documentacao</a> para saber como obter seu Organization ID.
-3. Para ter acesso a aplicação, o email do usuário precisará ter permissão de Full Admin à orgarnização especificada na configuração. Use <a href="https://docs.umbrella.com/deployment-umbrella/docs/add-a-new-user"> esta documentação</a> para saber como funcionam as permissões de usuários no Umbrella.
-4. O CSV deve ser em formato serparado por vírgula!!<br>
-5. O CSV de Internal Networks deve ser preenchido da seguinte forma:<br>
+2. Você também irá precisar das API key e API Secret do <a href="https://developer.cisco.com/docs/cloud-security/#!reporting-v2-getting-started/authentication"> Cisco Umbrella Reporting API</a>
+3. Você também irá precisar de uma chave de API do <a href="https://developer.cisco.com/docs/cloud-security/#!investigate-getting-started/authentication"> Cisco Umbrella Investigate API</a>
+4. Você irá precisar também do Ubrella Organization ID! Use <a href = "https://docs.umbrella.com/deployment-umbrella/docs/find-your-organization-id" target="_blank">esta documentacao</a> para saber como obter seu Organization ID.
+5. Para ter acesso a aplicação, o email do usuário precisará ter permissão de Full Admin à orgarnização especificada na configuração. Use <a href="https://docs.umbrella.com/deployment-umbrella/docs/add-a-new-user"> esta documentação</a> para saber como funcionam as permissões de usuários no Umbrella.
+6. O CSV deve ser em formato serparado por vírgula!!<br>
+7. O CSV de Internal Networks deve ser preenchido da seguinte forma:<br>
    <b>Nome,IP,Prefixo</b>
 6. Pasta raiz da aplicação fica em C:/uses/USERNAME/.umbrella_api_calls <b>(IMPORTANTE)</b>
-7. Todos os logs gerados estão na pasta logs da pasta raiz da aplicação.
-8. O arquivo de configuração vai ser gerado na pasta raiz da aplicação.
+7. Todos os logs gerados estão na pasta <b>logs</b> da pasta raiz da aplicação.
+8. Todos os reports gerados estão na pasta <b>reports</b> da pasta raiz da aplicação.
+9. O arquivo de configuração vai ser gerado na pasta raiz da aplicação.
+10. A aplicação tem duas traduções nativas: Inglês e Português, fica a disposição do usuário qual utilizar
 
 # Features
 A aplicação vai trabalhar de modo inteligente fazendo todas as verificações e logando tudo para a pasta de logs da raiz da aplicação! Entre as verificações estão:
@@ -31,5 +35,13 @@ A aplicação vai trabalhar de modo inteligente fazendo todas as verificações 
    <b>registred_destinations.log</b> - Arquivo de log que informa os Destinos do CSV selecionado que foram cadastradas.
 <br><br><br>
 <img src="images/access.png"><br><br>
-<img src="images/app_home.png">
+<img src="images/menu.png"><br><br><br>
 
+# Investigate
+A aplicaçã é capaz de ver a reputação de um Domínio/IP através do Umbrella Investigate, e com isso você conseguirá adicionar esse Domínio/IP em algum Destination list se a disposição for maliciosa.
+<br><br><br>
+# Reporting
+A aplicação é capaz de rodar um reporting do Cisco Umbrella entre duas datas e o resultado do report será um arquivo <b>.csv</b><br>
+Pontos de atenção:
+1. O reporting é feito de hora em hora através de duas datas, com isso consegue trazer mais resultados por tempo indeterminado
+2. O limite de cada request é de <b>5000</b>, ou seja, se nessa uma hora de reporting tiver mais que 5000 requisições do Umbrella, ele só vai pegar as 5000 primeiras.
