@@ -1,14 +1,13 @@
 from tkinter import Toplevel,Menu,Label,Button,messagebox,filedialog,simpledialog,ttk,Text,Tk,END,Canvas,NW
 from tkcalendar import Calendar
 from PIL import ImageTk,Image
-from collections import OrderedDict
 from datetime import timedelta as td, datetime,timezone, tzinfo, date
 import pandas as pd
 from dateutil import tz
 from csv import reader,DictReader
 from unidecode import unidecode
 import json
-import requests,base64
+import requests
 import configparser
 import sys
 import os
@@ -77,7 +76,10 @@ class globalV():
     invalid_ip__message_title = ""
     choose_valid_site = ""
     choose_valid_site_title = ""
+    choose_valid_network = ""
+    choose_valid_network_title = ""
     confirmation_site_assign = ""
+    confirmation_network_assign = ""
     choose_valid_list = ""
     choose_valid_list_title = ""
     confirmation_list_assign = ""
@@ -99,6 +101,8 @@ class globalV():
     destination_successfully_registred = ""
     destination_successfully_registred_title = ""
     internalnetworks_site_assign_label = ""
+    internalnetworks_network_assign_label = ""
+    internalnetworks_invalidSiteId = ""
     internalnetworks_title_label = ""
     internalnetworks_title = ""
     internalnetworks_log = ""
@@ -126,7 +130,8 @@ class globalV():
     menu_domain_csv = ""
     menu_domain_manual = ""
     menu_internalNetworks = ""
-    menu_internalNetworks_csv = ""
+    menu_internalNetworks_csv_site = ""
+    menu_internalNetworks_csv_net = ""
     menu_sites = ""
     menu_sites_csv = ""
     menu_sites_manual = ""
@@ -189,7 +194,7 @@ class globalV():
     reporting_date_invalid = ""
     reporting_date_invalid_title = ""
 ############################# Script Version #############################
-versao = 'v1.6'
+versao = 'v1.8'
 
 
 ############################# Criando arquivo de configuração na primeira execução do script #############################
@@ -248,14 +253,14 @@ if not os.path.isfile(configFilePath):
 #URLS de download
 icon_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/images/umbrella_icon.ico'
 backgroundImage_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/images/umbrella.jpg'
-InfoImage_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/images/info-logo.png'
+InfoImage_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/images/info-logo.jpg'
 
 translation_portugues_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/translations/frases_portugues.json'
 translation_english_download_url = 'https://raw.githubusercontent.com/ValentimMuniz/Cisco-Umbrella-API-Calls/main/translations/frases_english.json'
 
 backgroundImageFile = fullFolderImagesPath + "/umbrella.jpg" 
 iconImageFile = fullFolderImagesPath + "/umbrella_icon.ico"
-InfoImageFile = fullFolderImagesPath + "/info-logo.png"
+InfoImageFile = fullFolderImagesPath + "/info-logo.jpg"
 translationFile_portugues = fullFolderTranslationsPath + "/frases_portugues.json"
 translationFile_english = fullFolderTranslationsPath + "/frases_english.json"
 
@@ -621,18 +626,31 @@ def browseSitesCSV(closing):
     else:
         SitesCSV = ""
 
-def browseInternalNet(closing): 
-    global internalNetCSV,fileNameCSV_InternalNetwork
+def browseInternalNet_Site(closing): 
+    global internalNetCSV_site,fileNameCSV_InternalNetwork_Site
     if closing == False:
         filenameInternalNet = filedialog.askopenfilename(title = globalV.fileDiaglog_explorer, filetypes=(('CSV files', '*.csv'),))
-        internalnetWindow.focus_set()
-        internalNetCSV = filenameInternalNet
-        path = Path(internalNetCSV)
-        fileNameCSV_InternalNetwork = path.name
-        if internalNetCSV != "":
-            labelSelectedCSVNet.config(text = globalV.label_csv_selected + path.name)
+        internalnetWindow_site.focus_set()
+        internalNetCSV_site = filenameInternalNet
+        path = Path(internalNetCSV_site)
+        fileNameCSV_InternalNetwork_Site = path.name
+        if internalNetCSV_site != "":
+            labelSelectedCSVNet_site.config(text = globalV.label_csv_selected + path.name)
     else:
-        internalNetCSV = ""
+        internalNetCSV_site = ""
+
+def browseInternalNet_Net(closing): 
+    global internalNetCSV_net,fileNameCSV_InternalNetwork_Net
+    if closing == False:
+        filenameInternalNet = filedialog.askopenfilename(title = globalV.fileDiaglog_explorer, filetypes=(('CSV files', '*.csv'),))
+        internalnetWindow_net.focus_set()
+        internalNetCSV_net = filenameInternalNet
+        path = Path(internalNetCSV_net)
+        fileNameCSV_InternalNetwork_Net = path.name
+        if internalNetCSV_net != "":
+            labelSelectedCSVNet_net.config(text = globalV.label_csv_selected + path.name)
+    else:
+        internalNetCSV_net = ""
 
 def browseDestination(closing): 
     global DestinationCSV,fileNameCSV_Destination
@@ -650,12 +668,19 @@ def browseDestination(closing):
 
 
 ############################# Funções para limpeza das varáveis #############################
-def clearInternalNet():
-    global internalNetCSV
-    internalNetCSV = ""
-    labelSelectedCSVNet.config(text = '')
+def clearInternalNet_Site():
+    global internalNetCSV_site
+    internalNetCSV_site = ""
+    labelSelectedCSVNet_site.config(text = '')
     cmbSites.current(0)
-    progressbar_net.place_forget()
+    progressbar_net_site.place_forget()
+
+def clearInternalNet_Net():
+    global internalNetCSV_net
+    internalNetCSV_net = ""
+    labelSelectedCSVNet_net.config(text = '')
+    cmbNetworks.current(0)
+    progressbar_net_net.place_forget()
 
 def clearDestination():
     global DestinationCSV
@@ -702,13 +727,33 @@ def start_progress_thread(event, pg_bar, tipo):
     if tipo == "domain":
         thread_tipo = CadastrarInternalDomains
         pg_bar.place(relx=.015,rely=.6)
-    if tipo == "internalnet":
+    if tipo == "internalnet_site":
         confirmarSite = messagebox.askquestion(globalV.confirmation_title, globalV.confirmation_site_assign + cmbSites.get() + " ?", icon='warning')
         if confirmarSite == 'no':
-            pg_bar.place_forget()
-            return messagebox.showwarning(globalV.choose_valid_site_title, globalV.choose_valid_site, parent=internalnetWindow)    
+            progressbar_net_site.place_forget()
+            return messagebox.showwarning(globalV.choose_valid_site_title, globalV.choose_valid_site, parent=internalnetWindow_site)
         else:
+            #Fazer o Load do CSV de Internal Networks para checar
+            checkCSV = load_csvInternalNet_Site()
+            if checkCSV == "NotCSV":
+                clearInternalNet_Site()
+                return messagebox.showinfo(globalV.csv_missing_title, globalV.csv_missing, parent=internalnetWindow_site)    
+
             thread_tipo = CadastrarInternalNet_SiteID
+            pg_bar.place(relx=.012,rely=.87)
+    if tipo == "internalnet_net":
+        confirmarNet = messagebox.askquestion(globalV.confirmation_title, globalV.confirmation_site_assign + cmbNetworks.get() + " ?", icon='warning')
+        if confirmarNet == 'no':
+            progressbar_net_net.place_forget()
+            return messagebox.showwarning(globalV.choose_valid_network_title, globalV.choose_valid_network, parent=internalnetWindow_net)
+        else:
+            #Fazer o Load do CSV de Internal Networks para checar
+            checkCSV = load_csvInternalNet_Net()
+            if checkCSV == "NotCSV":
+                clearInternalNet_Net()
+                return messagebox.showinfo(globalV.csv_missing_title, globalV.csv_missing, parent=internalnetWindow_net)    
+
+            thread_tipo = CadastrarInternalNet_NetworkID
             pg_bar.place(relx=.012,rely=.87)
     if tipo == "destination":
         confirmarDest = messagebox.askquestion(globalV.confirmation_title, globalV.confirmation_list_assign + cmbDestinations.get(), icon='warning')
@@ -760,9 +805,16 @@ def on_closingDomain():
     MenuPrincipal.lift()
     MenuPrincipal.focus_force()
 
-def on_closingNet():
-    internalnetWindow.destroy()
-    browseInternalNet(True)
+def on_closingNet_Site():
+    internalnetWindow_site.destroy()
+    browseInternalNet_Site(True)
+    MenuPrincipal.attributes("-topmost", True)
+    MenuPrincipal.lift()
+    MenuPrincipal.focus_force()
+
+def on_closingNet_Net():
+    internalnetWindow_net.destroy()
+    browseInternalNet_Net(True)
     MenuPrincipal.attributes("-topmost", True)
     MenuPrincipal.lift()
     MenuPrincipal.focus_force()
@@ -840,7 +892,6 @@ def checkCSVColumns(csvname, tipo):
             
         if wrongCSV == True:
             wrongCSVLine = formatString(wrongCSVLine)
-            labelSelectedCSVSite.config(text = '')
             now = datetime.now()
             # dd/mm/YY H:M:S
             dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -904,7 +955,8 @@ def checkCSVColumns(csvname, tipo):
         
         if wrongCSV == True:
             wrongCSVLine = formatString(wrongCSVLine)
-            labelSelectedCSVNet.config(text = '')
+            labelSelectedCSVNet_site.config(text = '')
+            labelSelectedCSVNet_site.config(text = '')
             now = datetime.now()
             # dd/mm/YY H:M:S
             dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -1791,103 +1843,187 @@ def CadastrarDestination(destination_id):
     elif code_access_token_getrequests == 404:
         return messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=DestinationListsWindow)
 
+
 ############################# Função para bindar quando pressionar a tecla Enter #############################
-def enterPressedInternalNet(e):
+def enterPressedInternalNet_Net(e):
     if e.keycode == 13:
-        start_progress_thread(None, progressbar_net, "internalnet")
+        start_progress_thread(None, progressbar_net_net, "internalnet_net")
+
+#Funcão para pegar o SiteID do Site selecionado e chamar a função de cadastro!
+def CadastrarInternalNet_NetworkID():
+    networkIDselected = str(listaIdNetworks[cmbNetworks.current()]).rstrip()
+    CadastrarInternalNet(networkIDselected, "network", internalnetWindow_net)
+
+############################# Janela Internal Networks via Networks #############################
+def openMenuInternalNetworks_Net():   
+    # Variavel global poist tem uso em outras funções
+    global internalnetWindow_net,labelSelectedCSVNet_net,cmbNetworks,listaIdNetworks,progressbar_net_net
+    # Criar a Janela via Toplevel e setar parametros iniciais
+    internalnetWindow_net = Toplevel(root)   
+    internalnetWindow_net.title(globalV.internalnetworks_title) 
+    internalnetWindow_net.wm_iconbitmap(iconImageFile)
+    internalnetWindow_net.minsize(450,200)
+    center(internalnetWindow_net)
+    internalnetWindow_net.resizable(0,0)
+    internalnetWindow_net.configure(background='#F0FFFF')
+    
+    r_get_public_networks = get_request('/organizations/{}/networks'.format(org_id))
+
+    #Fazer o get para pritar a lista de sites e só proceder se estiver OK
+    if code_access_token_getrequests == 200:
+        #Json da Public Network
+        dump_networks = json.dumps(r_get_public_networks)
+        networks_json = json.loads(dump_networks)
+        #combobox dos Sites
+        cmbNetworks = ttk.Combobox(internalnetWindow_net,state="readonly", width = 30)
+        
+        listaIdNetworks = []
+        for nets in networks_json:
+            cmbNetworks['value'] = (*cmbNetworks['values'], nets['name'])
+            listaIdNetworks.append(nets['originId'])
+
+        labelprinc = Label(internalnetWindow_net,text=globalV.internalnetworks_title_label,font='Calibri 15 bold', bg='#F0FFFF')
+        labelprinc.place(relx=.012, rely=.0)
+
+        lablcsv = Label(internalnetWindow_net,text=globalV.label_choose_csv, font='Calibri 13 bold', bg='#F0FFFF')
+        lablcsv.place(relx=.012, rely=.2)
+
+        botao_csv = HoverButton(internalnetWindow_net,text=globalV.explore_csv_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda: browseInternalNet_Net(False))
+        botao_csv.place(relx=.30, rely=.2)
+
+        labelSelectedCSVNet_net = Label(internalnetWindow_net,text='', font='Calibri 12 bold', fg='#0ea3da', bg='#F0FFFF')
+        labelSelectedCSVNet_net.place(relx=.012, rely=.36)
+
+        labelNet = Label(internalnetWindow_net,text=globalV.internalnetworks_network_assign_label, font='Calibri 13 bold', bg='#F0FFFF')
+        labelNet.place(relx=.012, rely=.5)
+
+        cmbNetworks.place(relx=.43, rely=.512)
+        cmbNetworks.current(0) 
+       
+        #bindar para remover toda vez que fica selecionado, faz com que a janela fique com o foco
+        cmbNetworks.bind("<<ComboboxSelected>>",lambda e: internalnetWindow_net.focus())
+
+        progressbar_net_net = ttk.Progressbar(internalnetWindow_net, style="bar.Horizontal.TProgressbar", orient="horizontal", length=150, mode="indeterminate")
+        
+        botao_enviar = HoverButton(internalnetWindow_net,text = globalV.send_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda:start_progress_thread(None, progressbar_net_net, "internalnet_net"))
+        botao_enviar.place(relx=.012, rely=.7)
+
+    
+        internalnetWindow_net.bind('<KeyPress>', enterPressedInternalNet_Net)
+        internalnetWindow_net.protocol("WM_DELETE_WINDOW", on_closingNet_Net)
+
+    elif code_access_token_getrequests == 401 or code_access_token_getrequests == 403:
+        messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=internalnetWindow_net)
+        on_closingNet_Net()
+    elif code_access_token_getrequests == 404:
+        messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=internalnetWindow_net)
+        on_closingNet_Net()
+
+
+############################# Função para bindar quando pressionar a tecla Enter #############################
+def enterPressedInternalNet_Site(e):
+    if e.keycode == 13:
+        start_progress_thread(None, progressbar_net_site, "internalnet_site")
 
 #Funcão para pegar o SiteID do Site selecionado e chamar a função de cadastro!
 def CadastrarInternalNet_SiteID():
     siteIDselected = str(listaIdSites[cmbSites.current()]).rstrip()
-    CadastrarInternalNet(siteIDselected)
-
-############################# Janela Internal Networks #############################
-def openMenuInternalNetworks():   
+    CadastrarInternalNet(siteIDselected, "site", internalnetWindow_site)
+    
+############################# Janela Internal Networks via Sites #############################
+def openMenuInternalNetworks_Site():   
     # Variavel global poist tem uso em outras funções
-    global internalnetWindow,labelSelectedCSVNet,cmbSites,listaIdSites,progressbar_net
+    global internalnetWindow_site,labelSelectedCSVNet_site,cmbSites,listaIdSites,progressbar_net_site
     # Criar a Janela via Toplevel e setar parametros iniciais
-    internalnetWindow = Toplevel(root)   
-    internalnetWindow.title(globalV.internalnetworks_title) 
-    internalnetWindow.wm_iconbitmap(iconImageFile)
-    internalnetWindow.minsize(400,200)
-    center(internalnetWindow)
-    internalnetWindow.resizable(0,0)
-    internalnetWindow.configure(background='#F0FFFF')
+    internalnetWindow_site = Toplevel(root)   
+    internalnetWindow_site.title(globalV.internalnetworks_title) 
+    internalnetWindow_site.wm_iconbitmap(iconImageFile)
+    internalnetWindow_site.minsize(450,200)
+    center(internalnetWindow_site)
+    internalnetWindow_site.resizable(0,0)
+    internalnetWindow_site.configure(background='#F0FFFF')
     
     r_get_sites = get_request('/organizations/{}/sites'.format(org_id))
 
-
     #Fazer o get para pritar a lista de sites e só proceder se estiver OK
     if code_access_token_getrequests == 200:
+        #Json do Sites
         dump_sites = json.dumps(r_get_sites)
         sites_json = json.loads(dump_sites)
         #combobox dos Sites
-        cmbSites = ttk.Combobox(internalnetWindow,state="readonly", width = 30)
+        cmbSites = ttk.Combobox(internalnetWindow_site,state="readonly", width = 30)
 
         #Adicionar os names dos Sites ao combobox, e em seguida ja pegar seu id e jogar na lista de id_sites
         listaIdSites = []
         for sites in sites_json:
             cmbSites['value'] = (*cmbSites['values'], sites['name'])
             listaIdSites.append(sites['siteId'])
+        
 
-        labelprinc = Label(internalnetWindow,text=globalV.internalnetworks_title_label,font='Calibri 15 bold', bg='#F0FFFF')
+        labelprinc = Label(internalnetWindow_site,text=globalV.internalnetworks_title_label,font='Calibri 15 bold', bg='#F0FFFF')
         labelprinc.place(relx=.012, rely=.0)
 
-        lablcsv = Label(internalnetWindow,text=globalV.label_choose_csv, font='Calibri 13 bold', bg='#F0FFFF')
+        lablcsv = Label(internalnetWindow_site,text=globalV.label_choose_csv, font='Calibri 13 bold', bg='#F0FFFF')
         lablcsv.place(relx=.012, rely=.2)
 
-        botao_csv = HoverButton(internalnetWindow,text=globalV.explore_csv_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda: browseInternalNet(False))
+        botao_csv = HoverButton(internalnetWindow_site,text=globalV.explore_csv_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda: browseInternalNet_Site(False))
         botao_csv.place(relx=.30, rely=.2)
 
-        labelSelectedCSVNet = Label(internalnetWindow,text='', font='Calibri 12 bold', fg='#0ea3da', bg='#F0FFFF')
-        labelSelectedCSVNet.place(relx=.012, rely=.36)
+        labelSelectedCSVNet_site = Label(internalnetWindow_site,text='', font='Calibri 12 bold', fg='#0ea3da', bg='#F0FFFF')
+        labelSelectedCSVNet_site.place(relx=.012, rely=.36)
 
-        labelSite = Label(internalnetWindow,text=globalV.internalnetworks_site_assign_label, font='Calibri 13 bold', bg='#F0FFFF')
+        labelSite = Label(internalnetWindow_site,text=globalV.internalnetworks_site_assign_label, font='Calibri 13 bold', bg='#F0FFFF')
         labelSite.place(relx=.012, rely=.5)
 
         cmbSites.place(relx=.43, rely=.512)
         cmbSites.current(0) 
+       
         #bindar para remover toda vez que fica selecionado, faz com que a janela fique com o foco
-        cmbSites.bind("<<ComboboxSelected>>",lambda e: internalnetWindow.focus())
+        cmbSites.bind("<<ComboboxSelected>>",lambda e: internalnetWindow_site.focus())
 
-        progressbar_net = ttk.Progressbar(internalnetWindow, style="bar.Horizontal.TProgressbar", orient="horizontal", length=150, mode="indeterminate")
+        progressbar_net_site = ttk.Progressbar(internalnetWindow_site, style="bar.Horizontal.TProgressbar", orient="horizontal", length=150, mode="indeterminate")
         
-        botao_enviar = HoverButton(internalnetWindow,text = globalV.send_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda:start_progress_thread(None, progressbar_net, "internalnet"))
+        botao_enviar = HoverButton(internalnetWindow_site,text = globalV.send_btn,  width=20, activebackground='#0688fa', bg='#2dabf9', command = lambda:start_progress_thread(None, progressbar_net_site, "internalnet_site"))
         botao_enviar.place(relx=.012, rely=.7)
 
     
-        internalnetWindow.bind('<KeyPress>', enterPressedInternalNet)
-        internalnetWindow.protocol("WM_DELETE_WINDOW", on_closingNet)
+        internalnetWindow_site.bind('<KeyPress>', enterPressedInternalNet_Site)
+        internalnetWindow_site.protocol("WM_DELETE_WINDOW", on_closingNet_Site)
 
     elif code_access_token_getrequests == 401 or code_access_token_getrequests == 403:
-        messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=internalnetWindow)
-        on_closingNet()
+        messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=internalnetWindow_site)
+        on_closingNet_Site()
     elif code_access_token_getrequests == 404:
-        messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=internalnetWindow)
-        on_closingNet()
+        messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=internalnetWindow_site)
+        on_closingNet_Site()
 
-############################# Função para pegar o CSV de Internal Domains #############################    
-def load_csvInternalNet():
+############################# Função para pegar o CSV de Internal Network via Rede #############################    
+def load_csvInternalNet_Net():
     try:
         # Tentando abrir o arquivo especificado
-        with open(internalNetCSV):
+        with open(internalNetCSV_net):
+            pass
+    except:
+        return "NotCSV"
+
+############################ Função para pegar o CSV de Internal Networks via Site #############################    
+def load_csvInternalNet_Site():
+    try:
+        # Tentando abrir o arquivo especificado
+        with open(internalNetCSV_site):
             pass
     except:
         return "NotCSV"
 
 ############################# Ação do botão para cadastrar Internal Networks via CSV #############################
-def CadastrarInternalNet(siteId):
-    #Fazer o Load do CSV de Internal Networks para checar
-    checkCSV = load_csvInternalNet()
-    if checkCSV == "NotCSV":
-        clearInternalNet()
-        return messagebox.showinfo(globalV.csv_missing_title, globalV.csv_missing, parent=internalnetWindow)
-    
-      
-    
+def CadastrarInternalNet(id, tipo, parent):
+    if tipo == "site":
+        csvtoOpen = internalNetCSV_site
+    elif tipo == "network":
+        csvtoOpen = internalNetCSV_net
     # fazer o get das internal netwokrs para comparar com o vsv
     r_get_internalnet = get_request('/organizations/{}/internalnetworks'.format(org_id))
-
+ 
     #Só procede o GET se for Status ok (200), se não informar o que esta errado
     if code_access_token_getrequests == 200:
         #Variavel para concatenar as Internal Networks para depois logar como sucedidas
@@ -1900,13 +2036,13 @@ def CadastrarInternalNet(siteId):
         # remover do json act_internal_net o que nao importa comparar
         for element in act_internal_net: 
             del element['originId']
-            del element['siteName']
+            #del element['siteName']
             del element['createdAt']
             del element['modifiedAt']
-            del element['siteId']
+            #del element['siteId']
  
         # Abrir o CSV se existe'
-        f = open(internalNetCSV, 'r',encoding='utf-8-sig')  
+        f = open(csvtoOpen, 'r',encoding='utf-8-sig')  
 
         # Adicionar as colunas no output do CSV Principal para ficar igual JSON pra post.
         readerDic = DictReader(f, delimiter=',', fieldnames = ("name","ipAddress","prefixLength")) 
@@ -1915,10 +2051,13 @@ def CadastrarInternalNet(siteId):
         sorted_csv = sorted(readerDic, key=lambda row: (row['name']))
     
         #chama função pra checar as colunas do CSV
-        check = checkCSVColumns(internalNetCSV, 'internalnet')
+        check = checkCSVColumns(csvtoOpen, 'internalnet')
         if check == "wrongCSV":
-            clearInternalNet()
-            return messagebox.showinfo(globalV.wrong_csv_title, globalV.wrong_csv, parent=internalnetWindow) 
+            if tipo == "site":
+                clearInternalNet_Site()
+            elif tipo == "network":
+                clearInternalNet_Net()
+            return messagebox.showinfo(globalV.wrong_csv_title, globalV.wrong_csv, parent=parent) 
 
         
         # Fazer o Parse de CSV para JSON  
@@ -1934,8 +2073,11 @@ def CadastrarInternalNet(siteId):
 
         #Se achar alguma linha do CSV com IP errado pausar, nao deixa seguir com cadastro
         if count > 0:
-            clearInternalNet()
-            return messagebox.showerror(globalV.invalid_ip__message_title, globalV.invalid_ip_message, parent=internalnetWindow)
+            if tipo == "site":
+                clearInternalNet_Site()
+            elif tipo == "network":
+                clearInternalNet_Net()
+            return messagebox.showerror(globalV.invalid_ip__message_title, globalV.invalid_ip_message, parent=parent)
         
         #Remover duplicados exatos do csv e criar nova lista adionando somente o que não é duplicado
         lista_removido_duplicado = []
@@ -1977,18 +2119,27 @@ def CadastrarInternalNet(siteId):
         
         #Se a lista retornar vazia não cadastrar nada
         if not lista_final:
-            clearInternalNet()
-            return messagebox.showinfo(globalV.csv_already_registred_title, globalV.csv_already_registred + fileNameCSV_InternalNetwork, parent=internalnetWindow)
+            if tipo == "site":
+                clearInternalNet_Site()
+            elif tipo == "network":
+                clearInternalNet_Net()
+            return messagebox.showinfo(globalV.csv_already_registred_title, globalV.csv_already_registred + fileNameCSV_InternalNetwork_Site, parent=parent)
         total = 0
         for cadastrar in lista_final:
             #Adiciona o siteID criado ao final da lista Json que vai mandar o POST
-            cadastrar['siteId'] = int(siteId)
+            if tipo == "site":
+                cadastrar['siteId'] = int(id)
+            elif tipo == "network":
+                cadastrar['networkId'] = int(id)
             post_internalnetworks_request('/organizations/{}/internalnetworks'.format(org_id), json.dumps(cadastrar)) 
             total += tempo
             successinternalNetworks += "Intenal Network: " + cadastrar['name'] + ", Ip/Prefix: " + cadastrar['ipAddress'] + "/" + cadastrar['prefixLength']  + "\n"
         
         if code_access_token_net_post == 200:
-            clearInternalNet()
+            if tipo == "site":
+                clearInternalNet_Site()
+            elif tipo == "network":
+                clearInternalNet_Net()
             now = datetime.now()
             # dd/mm/YY H:M:S
             dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -2005,17 +2156,17 @@ def CadastrarInternalNet(siteId):
             f.write("\n")
             f.write(successinternalNetworks)
             f.close()
-            return messagebox.showinfo(globalV.internalnetworks_successfully_registred_title, globalV.internalnetworks_successfully_registred, parent=internalnetWindow)
+            return messagebox.showinfo(globalV.internalnetworks_successfully_registred_title, globalV.internalnetworks_successfully_registred, parent=parent)
         elif code_access_token_net_post == 401 or code_access_token_net_post == 403:
-            return messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=internalnetWindow)
+            return messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=parent)
         elif code_access_token_net_post == 404:
-            return messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=internalnetWindow)
+            return messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=parent)
         elif code_access_token_net_post == 400:
-            return messagebox.showerror("SiteID inválido", "SiteID inválido, por favor informe um SiteID válido", parent=internalnetWindow)
+            return messagebox.showerror(globalV.internalnetworks_invalidSiteId, globalV.internalnetworks_invalidSiteId, parent=parent)
     elif code_access_token_getrequests == 401 or code_access_token_getrequests == 403:
-        return messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=internalnetWindow)
+        return messagebox.showerror(globalV.invalid_mgmt_title_verify_email, globalV.invalid_mgmt_default, parent=parent)
     elif code_access_token_getrequests == 404:
-        return messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=internalnetWindow)
+        return messagebox.showerror(globalV.invalid_orgID_title, globalV.invalid_orgID_default, parent=parent)
         
 ############################# Função para bindar quando pressionar a tecla Enter #############################
 def enterPressedInternalDomain(e):
@@ -2327,7 +2478,8 @@ def menu():
     #Menubar Cadastrar Internal Networks
     filemenu2 = Menu(menubar, tearoff=0, background='white', foreground='#000000')  
     filemenu2.add_separator()
-    filemenu2.add_command(label=globalV.menu_internalNetworks_csv, command=openMenuInternalNetworks)
+    filemenu2.add_command(label=globalV.menu_internalNetworks_csv_site, command=openMenuInternalNetworks_Site)
+    filemenu2.add_command(label=globalV.menu_internalNetworks_csv_net, command=openMenuInternalNetworks_Net)
     menubar.add_cascade(label=globalV.menu_internalNetworks, menu=filemenu2)
 
     #Menubar Cadastrar Internal Domains
@@ -2371,7 +2523,7 @@ def menu():
 
     MenuPrincipal.wm_iconbitmap(iconImageFile)
     MenuPrincipal.title('Cisco Umbrella API Calls - {}'.format(versao))
-    MenuPrincipal.minsize(900,350)
+    MenuPrincipal.minsize(930,350)
     MenuPrincipal.resizable(0,0)
     center(MenuPrincipal)
     backgroundImage(MenuPrincipal)
@@ -2508,6 +2660,9 @@ def SetLang(lang, default):
         globalV.choose_valid_site = i['choose_valid_site']
         globalV.choose_valid_site_title = i['choose_valid_site_title']
         globalV.confirmation_site_assign = i['confirmation_site_assign']
+        globalV.choose_valid_network = i['choose_valid_network']
+        globalV.choose_valid_network_title = i['choose_valid_network_title']
+        globalV.confirmation_network_assign = i['confirmation_network_assign']
         globalV.confirmation_title = i['confirmation_title']
         globalV.choose_valid_list = i['choose_valid_list']
         globalV.choose_valid_list_title = i['choose_valid_list_title']
@@ -2529,6 +2684,8 @@ def SetLang(lang, default):
         globalV.destination_successfully_registred = i['destination_successfully_registred']
         globalV.destination_successfully_registred_title = i['destination_successfully_registred_title']
         globalV.internalnetworks_site_assign_label = i['internalnetworks_site_assign_label']
+        globalV.internalnetworks_network_assign_label = i['internalnetworks_network_assign_label']
+        globalV.internalnetworks_invalidSiteId = i['internalnetworks_invalidSiteId']
         globalV.internalnetworks_title_label = i['internalnetworks_title_label']
         globalV.internalnetworks_title = i['internalnetworks_title']
         globalV.internalnetworks_log = i['internalnetworks_log']
@@ -2556,7 +2713,8 @@ def SetLang(lang, default):
         globalV.menu_domain_csv = i['menu_domain_csv']
         globalV.menu_domain_manual = i['menu_domain_manual']
         globalV.menu_internalNetworks = i['menu_internalNetworks']
-        globalV.menu_internalNetworks_csv = i['menu_internalNetworks_csv']
+        globalV.menu_internalNetworks_csv_site = i['menu_internalNetworks_csv_site']
+        globalV.menu_internalNetworks_csv_net = i['menu_internalNetworks_csv_net']
         globalV.menu_sites = i['menu_sites']
         globalV.menu_sites_csv = i['menu_sites_csv']
         globalV.menu_sites_manual = i['menu_sites_manual']
@@ -2662,7 +2820,6 @@ elif language == "English":
 cmb_language.bind("<<ComboboxSelected>>",lambda e: SetLang(cmb_language.get(), False))
 
 
-
 imghelp = ImageTk.PhotoImage(Image.open(InfoImageFile))
 labelHelp = Label(root,image = imghelp, cursor="hand2", bg='#F0FFFF')
 labelHelp.place(relx=.91, rely=.8)
@@ -2691,7 +2848,8 @@ s.configure("bar.Horizontal.TProgressbar", troughcolor=BG_COLOR, bordercolor=TRO
 #Variáveis que precisam ser iniciadas pra funcionar o CSV import
 internaldomainCSV = ""
 SitesCSV = ""
-internalNetCSV = ""
+internalNetCSV_site = ""
+internalNetCSV_net = ""
 DestinationCSV = ""
 error = ""
 
