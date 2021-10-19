@@ -298,7 +298,7 @@ def LerConfiguracao():
     mgmt_api_secret = config['Umbrella']['management_secret_key']
     reporting_api_key = config['Umbrella']['reporting_api_key']
     reporting_api_secret = config['Umbrella']['reporting_secret_key']
-    investigate_api_key = config['Umbrella']['InvestigateKey']
+    investigate_api_key = config['Umbrella']['investigatekey']
     language = config['Language']['lang']
 LerConfiguracao()
 ############################# Fim de função para ler configuração #############################
