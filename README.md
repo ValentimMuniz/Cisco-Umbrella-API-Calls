@@ -4,7 +4,7 @@
 Desenvolvido por: Valentim Uliana
 
 Essa aplicação tem como intuito facilitar os cadastros em massa de Internal Domains, Internal Networks,Sites e Destinations do Cisco Umbrella, pois faz o uso de arquivos CSV para envio! Porém em questão de Sites, Domains e Destinations, há a opção de cadastrá-los manualmente. Alguns modelos de CSV estão nesse repositório.
-
+ 
 # Funcionamento
 1. Primeiramente você irá precisar das API Key e API Secret do <a href="https://docs.umbrella.com/umbrella-api/docs/authentication-and-errors">Cisco Umbrella Management API</a> para fazer as requisições da aplicação.
 2. Você também irá precisar das API key e API Secret do <a href="https://developer.cisco.com/docs/cloud-security/#!reporting-v2-getting-started/authentication"> Cisco Umbrella Reporting API</a>
